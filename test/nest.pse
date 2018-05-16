@@ -1,0 +1,30 @@
+algorithm gcd(a as integer, b as integer) as integer:
+  if b = 0 do
+    return a
+  done
+
+  return gcd(b, a % b)
+done
+
+algorithm fact(a as integer) as integer:
+  if a < 1 do
+    return 1
+  done
+
+  return a * fact(a - 1)
+done
+
+algorithm main() as program:
+  read a, b
+  show gcd(a, b)
+
+  for i <- 1, 5, 1 do
+    for j <- 1, 5, 1 do
+      for k <- 1, 5, 1 do
+        show i, " ", j, " ", k
+      done
+    done
+  done
+
+  show fact(6)
+done

@@ -8,6 +8,7 @@ To provide an interactive, small yet feature-sufficient language alongside a lig
 Check out the test/ directory for a list of example programs.
 
 # TODO
+* Improve (make it work, actually) the API of the library. (Return strings, don't console.log() things.)
 * Transpile into ES5 and have it run in the browser as normal.
 * Provide an example of a .html which uses the underlying library.
 * Full specification of the language.

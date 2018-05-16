@@ -1,0 +1,65 @@
+algorithm max(x as integer, y as integer) as integer:
+  if x > y do
+    return x
+  done
+
+  return y
+done
+
+algorithm min(x as integer, y as integer) as integer:
+  if x < y do
+    return x
+  done
+
+  return y
+done
+
+algorithm isC(x as integer, y as boolean) as boolean:
+  if (y and x != 0) or (not y and x = 0) do
+    return true
+  done
+
+  return false
+done
+
+algorithm main() as program:
+  read x, y
+  read z
+
+  if z != 0 do
+    show "Yes"
+  done
+
+  while x <= y do
+    x <- x + y / 2
+  done
+
+  if x = y do
+    x <- y * 2
+  done
+
+  do
+    y <- y - 16
+  until y < x
+
+  for i <- 1, x, 1 do
+    show i
+  done
+
+  y <- y + 2
+  x <- y - 2 * (-3)
+
+  show x, " ", y, " ", z
+
+  if x % 2 != 0 xor false do
+    show y
+  else if y % 2 = 0 do
+    show x
+  else
+    show "Bad luck.", "", "Better luck next time."
+  done
+
+  show "Number: ", max(max(x, y), z), " is the max from all 3."
+  show 'another kind', "of string", 'beautiful"'
+  show max(1, 2), max(12, 3), max(max(2, 13), 0), 12+2+3
+done
