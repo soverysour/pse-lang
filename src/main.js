@@ -1,7 +1,7 @@
 const Pse = require('./pse.js');
 
 var fs = require('fs');
-fs.readFile('../test/test.pse', 'utf8', function(e, data){
+fs.readFile('../test/temp', 'utf8', function(e, data){
   if ( e ) throw e;
   let p = new Pse(data, "3 12 16 45");
 
@@ -13,7 +13,16 @@ fs.readFile('../test/test.pse', 'utf8', function(e, data){
     return;
   }
 
-  p.complete();
+  while ( !p.isDone() )
+  {
+    let r = p.step();
+    if ( !r )
+      continue;
+    
+    console.log(r.msg);
+    if ( r.err )
+      console.log("Died at line " + p.line() + '.');
+  }
 
   //let line = p.line();
   //console.log(line);

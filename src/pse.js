@@ -54,9 +54,23 @@ class Pse {
   // Attempts to return the next line id to be executed
   line() { return this.program.currentLine(); }
   // Attempts to perform a step.
-  step(){ return this.program.step(); }
-  // Attempts to do all the remaining steps in the execution.
-  complete(){ while ( !this.program.isDone() ) this.program.step(); }
+  step()
+  {
+    if ( this.errors.length > 0 )
+      throw "Cannot step in a program with errors.";
+
+    let res = this.program.step();
+    if ( !res )
+      return;
+
+    if ( res.err )
+    {
+      this.errors.push(res.msg);
+    }
+
+    return res;
+  }
+  isDone() { return this.program.isDone(); }
   // Attempts to get the internal state of all variables.
   getState(){ return this.program.getState(); }
   // Attempts to get all the encountered errors.

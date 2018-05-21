@@ -72,8 +72,12 @@ class Program
       case '*':
         return left * right;
       case '/':
+        if ( right === 0 )
+          throw "Cannot use div operand on zero.";
         return (left / right) >> 0;
       case '%':
+        if ( right === 0 )
+          throw "Cannot use mod operand on zero.";
         return left % right;
       case '+':
         return left + right;
@@ -147,15 +151,28 @@ class Program
 
             this.cContext()[li.context.begin.target] = this.cContext()[li.context.begin.target] + step;
             let value = this.cContext()[li.context.begin.target];
-            if ( value <= limit )
+
+            if ( step >= 0 )
             {
-              this.currentInstrStack[this.currentInstrStack.length - 1] = 0;
+              if ( value <= limit )
+                this.currentInstrStack[this.currentInstrStack.length - 1] = 0;
+              else
+              {
+                this.executionStack.pop();
+                this.currentInstrStack.pop();
+                this.jumpOrNext();
+              }
             }
             else
             {
-              this.executionStack.pop();
-              this.currentInstrStack.pop();
-              this.jumpOrNext();
+              if ( value >= limit )
+                this.currentInstrStack[this.currentInstrStack.length - 1] = 0;
+              else
+              {
+                this.executionStack.pop();
+                this.currentInstrStack.pop();
+                this.jumpOrNext();
+              }
             }
             break;
           case 'if':
@@ -185,16 +202,16 @@ class Program
     switch(step.type)
     {
       case 'show':
-        let buff = ''
+        let buff = [];
         for ( let i = 0; i < step.context.expression.length; i++ )
         {
           if ( step.context.expression[i].type === 'string' )
-            buff += step.context.expression[i].value;
+            buff.push(step.context.expression[i].value);
           else
-            buff += this.eval(step.context.expression[i]);
+            buff.push(this.eval(step.context.expression[i]));
         }
-        console.log(buff);
         this.jumpOrNext();
+        return buff.join('');
         break;
       case 'read':
         for ( let i = 0; i < step.context.args.length; i++ )
@@ -256,15 +273,28 @@ class Program
       case 'for':
         let initial = this.eval(step.context.begin.expr);
         let limit = this.eval(step.context.limit);
+        let incr = this.eval(step.context.step);
         this.cContext()[step.context.begin.target] = initial;
 
-        if ( initial <= limit )
-        {
-          this.executionStack.push(step);
-          this.currentInstrStack.push(0);
+        if ( incr >= 0 ){
+          if ( initial <= limit )
+          {
+            this.executionStack.push(step);
+            this.currentInstrStack.push(0);
+          }
+          else
+            this.jumpOrNext();
         }
         else
-          this.jumpOrNext();
+        {
+          if ( initial >= limit )
+          {
+            this.executionStack.push(step);
+            this.currentInstrStack.push(0);
+          }
+          else
+            this.jumpOrNext();
+        }
         break;
       case 'until':
         this.executionStack.push(step);
@@ -299,9 +329,22 @@ class Program
   step()
   {
     if ( this.stackLevel === 0 )
-      throw "Cannot execute step in a finished algorithm.";
+      throw "Cannot execute step in a finished program.";
 
-    this.performStep();
+    if ( this.error )
+      throw "Cannot execute step in a program that encountered an exception.";
+
+    try
+    {
+      let res = this.performStep();
+      if ( res )
+        return {err:false, msg: res};
+    }
+    catch(err)
+    {
+      this.error = true;
+      return {err:true, msg: err};
+    }
   }
   currentLine()
   {
@@ -310,7 +353,7 @@ class Program
 
     return this.currentInstr().id; 
   }
-  isDone(){ return this.stackLevel === 0 ? true : false; }
+  isDone(){ return this.stackLevel === 0 || this.error ? true : false; }
   getState(){ return this.context[0]; }
   generateCpp(){ return 'TODO'; }
 }

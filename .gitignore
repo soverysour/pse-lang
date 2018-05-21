@@ -1,3 +1,5 @@
 *.swp
 archive/
 src/test
+todo.md
+test/temp
