@@ -1161,10 +1161,13 @@ function formTree(e, id) {
     }
   } else if (lowest === 0) {
     if (unary(e[lowest])) {
+      var t = formTree(e.slice(1, e.length), id);
       var op = e[0];
-      e.shift(1);
-      e[0].unary = op;
-      return formTree(e, id);
+      if (op.type === '-') {
+        if (t.unary === undefined) t.unary = op;else if (t.unary.type === '-') t.unary.type = '+';else t.unary.type = '-';
+      }
+
+      return t;
     }
     return { head: operator(e[0]), mainOp: formTree(e.slice(1, e.length), id) };
   }
