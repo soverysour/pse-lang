@@ -12,6 +12,5 @@ Write your main, transpile ES6 to ES5, and make it runnable in the browser with 
 I have provided in the example/ directory an example, final app. Just open pse.html in the browser.
 
 # TODO
-* Full specification of the language.
 * Generate equivallent .cpp code.
 * Provide tips and suggestions for improving the code (the pse code).

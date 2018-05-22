@@ -254,10 +254,12 @@ function stepFunc() {
   }
 
   var output = p.step();
+  if (p.isDone()) $("#program_info").text("The program has finished executing.");else $("#program_info").text("Currently at line " + p.line() + ".");
+
   if (output) {
     $("#program_log").val($("#program_log").val() + '\n' + output.msg);
 
-    if (output.err) $("#program_info").text("Died at line " + p.line() + ".");else if (!p.isDone()) $("#program_info").text("Currently at line " + p.line() + ".");else $("#program_info").text("The program has finished executing.");
+    if (output.err) $("#program_info").text("Died at line " + p.line() + ".");
   }
 }
 function completeFunc() {
@@ -587,9 +589,9 @@ var Program = function () {
   _createClass(Program, [{
     key: 'step',
     value: function step() {
-      if (this.stackLevel === 0) throw "Cannot execute step in a finished program.";
+      if (this.stackLevel === 0) return { err: true, msg: "Cannot execute step in a finished program." };
 
-      if (this.error) throw "Cannot execute step in a program that encountered an exception.";
+      if (this.error) return { err: true, msg: "Cannot execute step in a program that encountered an exception." };
 
       try {
         var res = this.performStep();
@@ -602,7 +604,7 @@ var Program = function () {
   }, {
     key: 'currentLine',
     value: function currentLine() {
-      if (this.stackLevel === 0) throw "The current program has finished executing.";
+      if (this.stackLevel === 0) return { err: true, msg: "The current program has finished executing." };
 
       return this.currentInstr().id;
     }

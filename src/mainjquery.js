@@ -45,16 +45,17 @@ function stepFunc(){
   }
 
   let output = p.step();
+  if ( p.isDone() )
+      $("#program_info").text("The program has finished executing.");
+  else
+      $("#program_info").text("Currently at line " + p.line() + ".");
+
   if ( output )
   {
     $("#program_log").val($("#program_log").val() + '\n' + output.msg);
     
     if ( output.err )
       $("#program_info").text("Died at line " + p.line() + ".");
-    else if ( !p.isDone() )
-      $("#program_info").text("Currently at line " + p.line() + ".");
-    else
-      $("#program_info").text("The program has finished executing.");
   }
 }
 function completeFunc(){

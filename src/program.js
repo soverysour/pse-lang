@@ -328,10 +328,10 @@ class Program
   step()
   {
     if ( this.stackLevel === 0 )
-      throw "Cannot execute step in a finished program.";
+      return {err:true, msg:"Cannot execute step in a finished program."};
 
     if ( this.error )
-      throw "Cannot execute step in a program that encountered an exception.";
+      return {err:true, msg:"Cannot execute step in a program that encountered an exception."};
 
     try
     {
@@ -348,7 +348,7 @@ class Program
   currentLine()
   {
     if ( this.stackLevel === 0 )
-      throw "The current program has finished executing.";
+      return {err:true, msg:"The current program has finished executing."};
 
     return this.currentInstr().id; 
   }
