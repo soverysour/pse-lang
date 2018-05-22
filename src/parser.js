@@ -4,6 +4,8 @@ module.exports = function (x)
 {
   // -1 - for errors that should never happen.
   try {
+    if ( x.length < 3 )
+      throw {code:8, line:0, extra:"No expression was given."};
     // Extra processing of AST.
     utils.expandCommaExpr(x); // 2
     utils.expandFuncs(x); // 6
@@ -40,6 +42,8 @@ module.exports = function (x)
       throw "Could not parse functions from expressions." + msg;
     else if ( e == 7 )
       throw "Improper use of expressions." + msg;
+    else if ( e === 8 )
+      throw "There is nothing to run." + msg;
     else
       throw "Didn't understand the error code " + e + ". " + msg;
   }

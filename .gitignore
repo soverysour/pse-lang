@@ -3,3 +3,7 @@ archive/
 src/test
 todo.md
 test/temp
+node_modules/
+package-lock.json
+.babelrc
+build/

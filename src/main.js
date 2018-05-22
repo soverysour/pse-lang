@@ -13,6 +13,7 @@ fs.readFile('../test/temp', 'utf8', function(e, data){
     return;
   }
 
+  /*
   while ( !p.isDone() )
   {
     let r = p.step();
@@ -23,12 +24,14 @@ fs.readFile('../test/temp', 'utf8', function(e, data){
     if ( r.err )
       console.log("Died at line " + p.line() + '.');
   }
+  */
 
   //let line = p.line();
   //console.log(line);
 
+  p.step();
   let state = p.getState();
-  //console.log(state);
+  console.log(state);
 
   let cpp = p.getCpp();
   //console.log(cpp);

@@ -28,7 +28,10 @@ class Pse {
     for ( var i = 0; i < expressions.length; i++ )
     {
       if ( expressions[i].valid === false && expressions[i].err === false )
+      {
         expressions.splice(i--, 1);
+        continue;
+      }
 
       if ( expressions[i].err )
       {

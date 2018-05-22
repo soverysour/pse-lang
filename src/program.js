@@ -115,7 +115,6 @@ class Program
       if ( this.executionStack.length === 1 ) // Particular case, for when the main algorithm has reached its end.
       {
         this.stackLevel--;
-        this.context.pop();
         this.executionStack.pop();
         this.currentInstrStack.pop();
       }
@@ -353,8 +352,8 @@ class Program
 
     return this.currentInstr().id; 
   }
-  isDone(){ return this.stackLevel === 0 || this.error ? true : false; }
-  getState(){ return this.context[0]; }
+  isDone(){ return this.stackLevel === 0 || this.error; }
+  getState(){ return this.cContext(); }
   generateCpp(){ return 'TODO'; }
 }
 

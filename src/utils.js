@@ -578,10 +578,15 @@ function expandExpr(alg, context)
         buildup.pop();
         break;
       case 'read':
+        if ( context['_self'] !== 'program' )
+          throw exc(5, x.id, "Can only have read statement in the program algorithm.");
         for ( let i = 0; i < x.context.args.length; i++ )
           buildup[buildup.length - 1][x.context.args[i]] = 'integer';
         break;
       case 'show':
+        if ( context['_self'] !== 'program' )
+          throw exc(5, x.id, "Can only have show statement in the program algorithm.");
+
         let acc = [];
         for ( let i = 0; i < x.context.expression.length; i++ )
         {
@@ -723,9 +728,6 @@ function lint(algos)
     }
     else
     {
-      if ( find(algos[i].subexpr, ['read', 'show']) )
-        throw exc(7, algos[i].id, "Only the 'program' algorithm can read / show.");
-
       if ( algos[i].subexpr[algos[i].subexpr.length - 1].type !== 'return' )
         throw exc(7, algos[i].id, "Last statement in non-program algorithm must be a return statement.");
     }
