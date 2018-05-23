@@ -312,12 +312,11 @@ function parseFunc(expr, id)
         yes.push(parseFunc(result[k]));
       
       next.push(func(fname, yes));
-      i = j + 1;
+      i = j - 1;
     }
     else
       next.push(expr[i]);
   }
-
   return next;
 }
 
@@ -397,7 +396,7 @@ function formTree(e, id)
     }
   }
 
-  if ( depth != 0 )
+  if ( depth !== 0 )
     throw exc(5, id, "Bad pairs of parenthesys, cannot close them.");
 
   if ( lowest === e.length )

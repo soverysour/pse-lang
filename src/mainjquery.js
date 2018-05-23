@@ -22,7 +22,7 @@ function loadFunc(){
   if ( errors )
   {
     $("#program_log").val(errors.join('\n'));
-    $("#program_info").text('The program couldn\'t be loaded.!');
+    $("#program_info").text('The program couldn\'t be loaded!');
     return;
   }
 
@@ -40,7 +40,7 @@ function stepFunc(){
 
   if ( p.isDone() )
   {
-    $("#program_info").text("Cannot step in a finished algorithm!");
+    $("#program_info").text("Cannot step in a finished algorith!");
     return;
   }
 

@@ -233,7 +233,7 @@ function loadFunc() {
   var errors = temp.getErrors();
   if (errors) {
     $("#program_log").val(errors.join('\n'));
-    $("#program_info").text('The program couldn\'t be loaded.!');
+    $("#program_info").text('The program couldn\'t be loaded!');
     return;
   }
 
@@ -249,7 +249,7 @@ function stepFunc() {
   }
 
   if (p.isDone()) {
-    $("#program_info").text("Cannot step in a finished algorithm!");
+    $("#program_info").text("Cannot step in a finished algorith!");
     return;
   }
 
@@ -1089,10 +1089,9 @@ function parseFunc(expr, id) {
       for (var k = 0; k < result.length; k++) {
         yes.push(parseFunc(result[k]));
       }next.push(func(fname, yes));
-      i = j + 1;
+      i = j - 1;
     } else next.push(expr[i]);
   }
-
   return next;
 }
 
@@ -1149,7 +1148,7 @@ function formTree(e, id) {
     }
   }
 
-  if (depth != 0) throw exc(5, id, "Bad pairs of parenthesys, cannot close them.");
+  if (depth !== 0) throw exc(5, id, "Bad pairs of parenthesys, cannot close them.");
 
   if (lowest === e.length) throw exc(5, id, "Cannot have operand on last position: " + operation(e[lowest]) + ".");
 
