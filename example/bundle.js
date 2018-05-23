@@ -679,7 +679,6 @@ var Pse = function () {
     try {
       var parsedState = parser(expressions);
       this.program = new Program(parsedState, data);
-      utils.log(this.program);
     } catch (e) {
       this.errors.push(e);
     }
@@ -1164,12 +1163,7 @@ function formTree(e, id) {
   } else if (lowest === 0) {
     if (unary(e[lowest])) {
       var t = formTree(e.slice(1, e.length), id);
-      var op = e[0];
-
-      var branch = t;
-      while (branch.head !== 'unit' && precedence({ type: branch.head }) <= precedence(op)) {
-        branch = branch.mainOp;
-      }if (branch.unary && branch.unary.type === '-') branch.unary.type = '+';else branch.unary = op;
+      t.unary = e[0];
 
       return t;
     }

@@ -420,16 +420,7 @@ function formTree(e, id)
     if ( unary(e[lowest]) )
     {
       let t = formTree(e.slice(1, e.length), id);
-      let op = e[0];
-
-      let branch = t;
-      while ( branch.head !== 'unit' && precedence({type:branch.head}) <= precedence(op) )
-        branch = branch.mainOp;
-
-      if ( branch.unary && branch.unary.type === '-' )
-        branch.unary.type = '+';
-      else
-        branch.unary = op;
+      t.unary = e[0];
 
       return t;
     }

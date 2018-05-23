@@ -87,9 +87,11 @@ Attempts to execute the subexpressions as long as cond is false.
 Executes before testing.
 
 *For expression*
+```
 for var <- initial, final, step do
   @subexpressions
 done
+```
 
 Defines var with value initial, and attempts to perform all subexpressions as long as initial hasn't passed final, given a step.
 The definition and last value of var persists after the for loop is finished.
