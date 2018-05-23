@@ -59,20 +59,22 @@ function precedence(o)
       return 9;
     case '+':
     case '-':
-      return 8;
+      return 7;
     case '<=':
     case '>=':
     case '!=':
     case '<':
     case '>':
     case '=':
-      return 7;
-    case 'not':
       return 6;
     case 'and':
     case 'or':
     case 'xor':
       return 5;
+    case 'not':
+      return 4;
+    default:
+      throw exc(-1, -1, "Couldn't find precedence for operator" + o);
   }
 }
 
@@ -391,7 +393,7 @@ function formTree(e, id)
       depth--;
     else if ( !operand(e[i]) && depth === 0 )
     {
-      if ( lowest === -1 || precedence(e[i]) < precedence(e[lowest]) )
+      if ( lowest === -1 || precedence(e[i]) <= precedence(e[lowest]) )
         lowest = i;
     }
   }
@@ -419,15 +421,15 @@ function formTree(e, id)
     {
       let t = formTree(e.slice(1, e.length), id);
       let op = e[0];
-      if ( op.type === '-' )
-      {
-        if ( t.unary === undefined )
-          t.unary = op;
-        else if ( t.unary.type === '-' )
-          t.unary.type = '+';
-        else
-          t.unary.type = '-';
-      }
+
+      let branch = t;
+      while ( branch.head !== 'unit' && precedence({type:branch.head}) <= precedence(op) )
+        branch = branch.mainOp;
+
+      if ( branch.unary && branch.unary.type === '-' )
+        branch.unary.type = '+';
+      else
+        branch.unary = op;
 
       return t;
     }

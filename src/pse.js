@@ -47,6 +47,7 @@ class Pse {
     {
       let parsedState = parser(expressions);
       this.program = new Program(parsedState, data);
+      utils.log(this.program);
     }
     catch(e)
     {

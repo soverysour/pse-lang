@@ -124,3 +124,5 @@ Var must not be a name of another algorithm or of an algorithm parameter.
 * Integer to integer: +, -, \*, /, %.
 * Integer to boolean: >, <, >=, <=, =, !=
 * Boolean to boolean: and, or, xor, not
+
+As far as precedence goes, it is as expected. except 'not'. It has a higher precedence than and, or, xor.
